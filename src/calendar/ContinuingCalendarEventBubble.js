@@ -12,7 +12,6 @@ type ContinuingCalendarEventBubbleAttrs = {|
 	color: string,
 	onEventClicked: clickHandler,
 	showTime: boolean,
-	amPmFormat: boolean
 |}
 
 export class ContinuingCalendarEventBubble implements MComponent<ContinuingCalendarEventBubbleAttrs> {
@@ -33,7 +32,7 @@ export class ContinuingCalendarEventBubble implements MComponent<ContinuingCalen
 				: null,
 			m(".flex-grow.overflow-hidden",
 				m(CalendarEventBubble, {
-					text: getEventText(attrs.event, attrs.showTime, attrs.amPmFormat),
+					text: getEventText(attrs.event, attrs.showTime),
 					color: defaultCalendarColor,
 					onEventClicked: () => attrs.onEventClicked(attrs.event),
 					noBorderLeft: startsBefore,

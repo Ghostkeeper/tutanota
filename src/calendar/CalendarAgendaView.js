@@ -50,7 +50,7 @@ export class CalendarAgendaView implements MComponent<Attrs> {
 								"max-width": "600px",
 							}
 						}, events.map((ev) => m(".darker-hover.mb-s", {key: ev._id}, m(CalendarEventBubble, {
-							text: getEventText(ev, true, attrs.amPmFormat),
+							text: getEventText(ev, true),
 							secondLineText: ev.location,
 							color: defaultCalendarColor,
 							hasAlarm: ev.alarmInfos.length > 0,

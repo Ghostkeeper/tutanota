@@ -7,6 +7,7 @@ import {clone} from "../api/common/utils/Utils"
 import {createCalendarRepeatRule} from "../api/entities/tutanota/CalendarRepeatRule"
 import {getAllDayDateLocal, getEventEnd, getEventStart, isAllDayEvent} from "../api/common/utils/CommonCalendarUtils"
 import {lang} from "../misc/LanguageViewModel"
+import {formatTime} from "../misc/Formatter"
 
 
 export type CalendarMonthTimeRange = {
@@ -297,11 +298,11 @@ function collidesWith(a: CalendarEvent, b: CalendarEvent): boolean {
 	return a.endTime.getTime() > b.startTime.getTime() && a.startTime.getTime() < b.endTime.getTime()
 }
 
-export function getEventText(event: CalendarEvent, showTime: boolean, amPm: boolean): string {
+export function getEventText(event: CalendarEvent, showTime: boolean): string {
 	if (isAllDayEvent(event) || !showTime) {
 		return event.summary
 	} else {
-		return timeString(event.startTime, amPm) + " " + event.summary
+		return formatTime(event.startTime) + " " + event.summary
 	}
 }
 

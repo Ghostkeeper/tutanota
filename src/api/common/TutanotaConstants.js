@@ -382,3 +382,16 @@ export const AlarmInterval = Object.freeze({
 	ONE_WEEK: "1W",
 })
 export type AlarmIntervalEnum = $Values<typeof AlarmInterval>
+
+export const TimeFormat = Object.freeze({
+	TWENTY_FOUR_HOURS: '0',
+	TWELWE_HOURS: '1',
+})
+export type TimeFormatEnum = $Values<typeof TimeFormat>
+
+export const WeekStart = Object.freeze({
+	MONDAY: '0',
+	SUNDAY: '1',
+})
+
+export type WeekStartEnum = $Values<typeof WeekStart>
