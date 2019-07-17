@@ -1,17 +1,18 @@
 //@flow
 import m from "mithril"
 import {CalendarEventBubble} from "./CalendarEventBubble"
-import {defaultCalendarColor} from "../api/common/TutanotaConstants"
 import {getStartOfDay} from "../api/common/utils/DateUtils"
 import {styles} from "../gui/styles"
 import {lang} from "../misc/LanguageViewModel"
 import {formatDateWithWeekday} from "../misc/Formatter"
-import {getEventText} from "./CalendarUtils"
+import {getEventColor, getEventText} from "./CalendarUtils"
+import {neverNull} from "../api/common/utils/Utils"
 
 type Attrs = {
 	eventsForDays: Map<number, Array<CalendarEvent>>,
-	amPmFormat: boolean,
 	onEventClicked: (ev: CalendarEvent) => mixed,
+	groupColors: {[Id]: string},
+	hiddenCalendars: Set<Id>,
 }
 
 export class CalendarAgendaView implements MComponent<Attrs> {
@@ -32,7 +33,7 @@ export class CalendarAgendaView implements MComponent<Attrs> {
 						return null
 					}
 					dayCount++
-					const events = attrs.eventsForDays.get(day) || []
+					const events = (attrs.eventsForDays.get(day) || []).filter((e) => !attrs.hiddenCalendars.has(neverNull(e._ownerGroup)))
 					if (events.length === 0) return null
 
 					const date = new Date(day)
@@ -52,7 +53,7 @@ export class CalendarAgendaView implements MComponent<Attrs> {
 						}, events.map((ev) => m(".darker-hover.mb-s", {key: ev._id}, m(CalendarEventBubble, {
 							text: getEventText(ev, true),
 							secondLineText: ev.location,
-							color: defaultCalendarColor,
+							color: getEventColor(ev, attrs.groupColors),
 							hasAlarm: ev.alarmInfos.length > 0,
 							onEventClicked: () => attrs.onEventClicked(ev),
 							height: 38,

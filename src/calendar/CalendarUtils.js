@@ -3,11 +3,12 @@ import {getStartOfDay, getStartOfNextDay, incrementDate} from "../api/common/uti
 import {pad} from "../api/common/utils/StringUtils"
 import type {RepeatPeriodEnum} from "../api/common/TutanotaConstants"
 import {DateTime} from "luxon"
-import {clone} from "../api/common/utils/Utils"
+import {clone, neverNull} from "../api/common/utils/Utils"
 import {createCalendarRepeatRule} from "../api/entities/tutanota/CalendarRepeatRule"
 import {getAllDayDateLocal, getEventEnd, getEventStart, isAllDayEvent} from "../api/common/utils/CommonCalendarUtils"
 import {lang} from "../misc/LanguageViewModel"
 import {formatTime} from "../misc/Formatter"
+import {defaultCalendarColor} from "../api/common/TutanotaConstants"
 
 
 export type CalendarMonthTimeRange = {
@@ -328,4 +329,12 @@ export function expandEvent(ev: CalendarEvent, columnIndex: number, columns: Arr
 export function getDiffInDays(a: Date, b: Date): number {
 	// discard the time and time-zone information
 	return Math.floor(DateTime.fromJSDate(a).diff(DateTime.fromJSDate(b), 'day').days)
+}
+
+export function getCalendarName(name: ?string): string {
+	return name || lang.get("privateCalendar_label")
+}
+
+export function getEventColor(event: CalendarEvent, groupColors: {[Id]: string}): string {
+	return groupColors[neverNull(event._ownerGroup)] || defaultCalendarColor
 }
